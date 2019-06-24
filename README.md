@@ -155,7 +155,6 @@ User can not delete Product that does not belongs to his/her, it is authorized i
     - `{ token }`
   - decoded
     - `{ id: _id }`
-  - query
 - response
   - `200`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
     }`
@@ -163,7 +162,9 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `401 not authorized`
 
 ```
-Query is used to update.
+- Token is decoded via JWT to get UserId.
+- User can only update Product to his/her cart.
+
 ```
 
 ## Delete Product in Cart
@@ -181,7 +182,8 @@ Query is used to update.
   - `401 not authorized`
 
 ```
-User can not delete Product that does not belongs to his/her, it is authorized in middleware.
+- Token is decoded via JWT to get UserId.
+- User can only delete Product from his/her cart.
 ```
 
 ## Clear Cart
@@ -193,7 +195,6 @@ User can not delete Product that does not belongs to his/her, it is authorized i
     - `{ token }`
   - decoded
     - `{ id: _id }`
-  - query
 - response
   - `200`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
     }`
@@ -201,7 +202,8 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `401 not authorized`
 
 ```
-- Query is used to update.
+- Token is decoded via JWT to get UserId.
+- User can only clear Product from his/her cart.
 ```
 
 ## Read Product
@@ -220,6 +222,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `500 internal server error`
 
 ```
-Token is decoded via JWT to get UserId.
+- Token is decoded via JWT to get UserId.
+- User can only read Product from his/her cart.
 
 ```
