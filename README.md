@@ -163,6 +163,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 
 ```
 - Token is decoded via JWT to get UserId.
+
 - User can only update Product to his/her cart.
 
 ```
@@ -183,6 +184,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 
 ```
 - Token is decoded via JWT to get UserId.
+
 - User can only delete Product from his/her cart.
 ```
 
@@ -203,6 +205,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 
 ```
 - Token is decoded via JWT to get UserId.
+
 - User can only clear Product from his/her cart.
 ```
 
@@ -223,6 +226,6 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 
 ```
 - Token is decoded via JWT to get UserId.
-- User can only read Product from his/her cart.
 
+- User can only read Product from his/her cart.
 ```
