@@ -5,7 +5,6 @@ module.exports = function (err, req, res, next) {
             message: bad
         })
     } else if (err.code === 401) {
-        console.log(err)
         res.status(401).json({
             message: err.message
         })

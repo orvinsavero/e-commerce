@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test'){
-    require("dotenv").config()
-}
+require("dotenv").config()
 const express = require("express")
 const routes = require("./routes")
 const mongoose = require('mongoose')

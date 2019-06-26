@@ -79,6 +79,7 @@ class UserController{
     static topup(req,res,next){
         let id = req.decoded.id
         let money = req.body.money
+        console.log(money)
         User.findByIdAndUpdate(id, { $inc: {money: money} }, { new: true })
         .then(result => {
           res.status(200).json(result);
@@ -113,8 +114,22 @@ class UserController{
         .catch(next)
     }
     static clearProduct(req,res,next){
+        let money = req.body.money
         let id = req.decoded.id
-        User.findByIdAndUpdate(id, { $set: {cart: []} }, { new: true })
+        console.log(money, "====")
+        User.findOne({_id: id})
+        .then((result) => {
+            console.log(result)
+            if (result.money < money){
+                throw {
+                    name: 'ValidationError',
+                    message: 'Not enough money!',
+                    path: 'Money'
+                }
+            }
+            money = result.money - money
+            return User.findByIdAndUpdate(id, { $set: {cart: [], money: money} }, { new: true })
+        })
         .then(result => {
           res.status(200).json(result);
         })

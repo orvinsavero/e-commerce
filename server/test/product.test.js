@@ -124,7 +124,6 @@ describe("Product testing", () => {
           quantity: 20,
           price: 1000,
           description: "Brand new in box (sealed)",
-          image: null,
           category: "Phone"
         })
         .then(res => {
@@ -155,7 +154,6 @@ describe("Product testing", () => {
           quantity: 20,
           price: 1000,
           description: "Brand new in box (sealed)",
-          image: null,
           category: "Phone"
         })
         .then(res => {
@@ -551,7 +549,6 @@ describe("Product testing", () => {
           quantity: 20,
           price: 1000,
           description: "Brand new in box (sealed)",
-          image: 20,
           category: "Phone"
         })
         .then(res => {
@@ -561,7 +558,6 @@ describe("Product testing", () => {
           expect(res.body).to.have.property("quantity");
           expect(res.body).to.have.property("created_at");
           expect(res.body.name).to.equal("iPhone 123@S");
-          expect(res.body.image).to.equal('20');
           expect(res.body.category).to.equal("Phone");
           done();
         })
@@ -582,7 +578,6 @@ describe("Product testing", () => {
           quantity: 20,
           price: '1000',
           description: "Brand new in box (sealed)",
-          image: 20,
           category: "Phone"
         })
         .then(res => {
@@ -592,7 +587,6 @@ describe("Product testing", () => {
           expect(res.body).to.have.property("quantity");
           expect(res.body).to.have.property("created_at");
           expect(res.body.name).to.equal("asdasd 123@S");
-          expect(res.body.image).to.equal('20');
           expect(res.body.price).to.equal(1000);
           done();
         })
