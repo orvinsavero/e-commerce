@@ -60,7 +60,6 @@ class ProductController {
     if (req.file){
       update.image = req.file.cloudStoragePublicUrl
     }
-    console.log(update)
     if (update.quantity){
       if (update.quantity < 0){
         throw {

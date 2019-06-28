@@ -1,5 +1,6 @@
 <template>
   <div v-if="!islogin" class="container">
+    <h1 style="margin-bottom: 70px">Hacktiv-Pedia</h1>
     <div class="row">
       <registerpage></registerpage>
       <loginpage @showHome="showHome"></loginpage>

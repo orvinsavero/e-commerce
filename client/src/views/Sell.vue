@@ -1,7 +1,7 @@
 <template>
-  <div style="margin:30px;margin-left:450px;margin-right:450px">
-    <h5 class="card-title" style="margin-top:30px">Product Detail</h5>
-    <sellpage></sellpage>
+  <div style="display:flex;justify-content:center;flex-direction:column;width:300px">
+    <h3 class="card-title">Sell Product</h3>
+    <sellpage class="row align-self-center"></sellpage>
   </div>
 </template>
 
@@ -12,6 +12,9 @@ export default {
   name: "sell-page",
   components: {
     sellpage
+  },
+  created() {
+    localStorage.setItem("currentPage", "sell");
   }
 };
 </script>

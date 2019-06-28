@@ -1,5 +1,5 @@
 <template>
-      <div class="col" style="margin-top:10%;margin-right:10%">
+      <div class="col" style="">
         <h5 class="card-title" style>Register</h5>
         <form @submit.prevent="userRegister">
           <div class="form-group">
@@ -22,7 +22,7 @@
           <div id="errorRegister">
             <p class="error" style="color:red;">{{ error.register }}</p>
           </div>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-success">Register</button>
         </form>
       </div>
 </template>
@@ -69,24 +69,6 @@ export default {
         })
         .catch(error => {
           this.error.register = `${error.response.data.message}`;
-        });
-    },
-    userLogin() {
-      axios({
-        method: "POST",
-        url: `${url}/login`,
-        data: {
-          email: this.login.email,
-          password: this.login.password
-        }
-      })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.token);
-          this.clearAll();
-          this.showHome();
-        })
-        .catch(error => {
-          this.error.login = `${error.response.data.message}`;
         });
     },
     showHome() {

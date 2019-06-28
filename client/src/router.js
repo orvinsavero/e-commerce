@@ -35,7 +35,14 @@ export default new Router({
     {
       path: '/cart',
       name: 'cart',
-      component: () => import('./views/Cart.vue')
+      component: () => import('./views/Cart.vue'),
+      children: [
+        {
+          path: '/cart/history',
+          name: 'history',
+          component: () => import('./views/History.vue')
+        }
+      ]
     },
     {
       path: '/edit/:id',

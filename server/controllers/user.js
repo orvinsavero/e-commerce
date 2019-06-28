@@ -10,6 +10,7 @@ class UserController{
             email: req.body.email,
             password: req.body.password,
             cart: [],
+            history: [],
             money: 0
         }
         User.create(newUser)
@@ -35,7 +36,8 @@ class UserController{
                     }
                     let temp = jwt.sign(userSign)
                     let token = {
-                        token: temp
+                        token: temp,
+                        auth: process.env.AUTH_PROD
                     }
                     res.status(200).json(token)
                 } else {
@@ -108,6 +110,7 @@ class UserController{
             _id: id
         })
         .populate('cart')
+        .populate('history')
         .then((result) => {
             res.status(200).json(result)
         })
@@ -117,7 +120,9 @@ class UserController{
         let money = req.body.money
         let id = req.decoded.id
         console.log(money, "====")
+
         User.findOne({_id: id})
+        .populate('cart')
         .then((result) => {
             console.log(result)
             if (result.money < money){
@@ -128,9 +133,20 @@ class UserController{
                 }
             }
             money = result.money - money
-            return User.findByIdAndUpdate(id, { $set: {cart: [], money: money} }, { new: true })
+            let allPromise = []
+            result.cart.forEach((product) => {
+                allPromise.push(
+                    User.findByIdAndUpdate(id, { $push: {history: product} }, { new: true }).exec()
+                )
+            });
+            return Promise.all(allPromise)
+        })
+        .then((result) => {
+            return User.findByIdAndUpdate(id, { $set: {cart: [], money: money} }, { new: true }).populate('history')
         })
         .then(result => {
+            
+            console.log(result)
           res.status(200).json(result);
         })
         .catch(next);

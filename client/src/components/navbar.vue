@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a v-if="!islogin" class="navbar-brand" style="cursor:pointer;color:#696969">Hacktiv-Pedia</a>
+  <nav class="navbar navbar-expand-lg navbar-dark " style="background-color:#25BA39;font-color:white">
+    <a v-if="!islogin" class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Pedia</a>
     <router-link v-if="islogin" to="/hacktivpedia">
-      <a class="navbar-brand" style="cursor:pointer;color:#696969">Hacktiv-Pedia</a>
+      <a class="navbar-brand" style="cursor:pointer;color:white">Hacktiv-Pedia</a>
     </router-link>
     <button class="navbar-toggler" type="button"></button>
 
@@ -10,7 +10,7 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <router-link to="/mystore">
-            <a class="nav-link" style="cursor:pointer">My Store</a>
+            <a class="nav-link active" style="cursor:pointer">My Store</a>
           </router-link>
         </li>
         <li class="nav-item">
@@ -30,7 +30,7 @@
         </li>
       </ul>
       <router-link to="/">
-        <button class="btn btn-outline-secondary" type="submit" v-on:click="logout">Logout</button>
+        <button class="btn btn-danger" type="submit" v-on:click="logout">Logout</button>
       </router-link>
     </div>
   </nav>

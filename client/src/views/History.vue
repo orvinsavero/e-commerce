@@ -1,32 +1,20 @@
 <template>
   <div class="container" style="display:flex;justify-content:center">
     <div style="width:1000px">
-      <h3 style="font-weight:700">My Cart</h3>
-      <router-link to="/cart/history">
-        <button class="btn btn-success" style="margin-top:10px" type="button">My History</button>
-        <br>
-      </router-link>
-
-      <p v-if="total.length != 0" style="margin-top:10px">Total in cart: ${{ total }}</p>
-      <button
-        v-on:click="checkout"
-        class="btn btn-warning"
-        style="margin-top:10px"
-        type="button"
-      >Checkout</button>
-
-      <div v-if="error" style="color:red;margin-top:10px">
-        <p>{{ error }}</p>
-      </div>
-      <div class="row justify-content-start" style="margin-top:30px;margin-left:1.5%">
+      <h3 style="font-weight:700">My History</h3>
+  
+            <router-link to="/cart">
+                      <button class="btn btn-secondary" style="margin-top:10px" type="button">Hide</button><br>
+          </router-link>
+      <div class="row justify-content-start" style="margin-top:30px">
         <userCart
-          :cart="cart"
+          :cart="cart" 
+          :history="history"
           v-for="(product, i) in myCart"
           :key="i"
           :product="product"
           @showCart="readCart"
         ></userCart>
-        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -42,7 +30,7 @@ export default {
       myCart: [],
       cart: true,
       error: false,
-      total: ""
+      history: true
     };
   },
   components: {
@@ -59,8 +47,9 @@ export default {
         }
       })
         .then(({ data }) => {
+            console.log(data)
           let arr2 = [];
-          data.cart.forEach(x => {
+          data.history.forEach(x => {
             let obj = {
               _id: x._id,
               name: x.name,
@@ -85,13 +74,8 @@ export default {
               arr[index].count++;
             }
           });
-          let total1 = 0;
-          console.log(arr);
-          arr.forEach(x => {
-            total1 += x.count * x.price;
-          });
-          this.total = total1;
           this.myCart = arr;
+          console.log(this.myCart)
           this.$emit("showProfile");
         })
         .catch(error => {
@@ -123,7 +107,6 @@ export default {
     }
   },
   created() {
-    localStorage.setItem("currentPage", "cart");
     this.readCart();
   }
 };

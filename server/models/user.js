@@ -46,6 +46,7 @@ const UserSchema = new Schema({
         }
     },
     cart: [{ type: Schema.Types.ObjectId, ref: 'Product'}],
+    history: [{ type: Schema.Types.ObjectId, ref: 'Product'}],
     money: Number
 });
 

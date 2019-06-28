@@ -1,5 +1,5 @@
 <template>
-      <div class="col" style="margin-top:10%;margin-left:10%">
+      <div class="col" style="">
         <h5 class="card-title" style>Login</h5>
         <form @submit.prevent="userLogin">
           <div class="form-group">
@@ -13,7 +13,7 @@
           <div id="errorLogin">
             <p class="error" style="color:red;">{{ error.login }}</p>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-success">Login</button>
         </form>
       </div>
 
@@ -52,6 +52,9 @@ export default {
       })
         .then(({ data }) => {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("auth", data.auth);
+          console.log(data)
+          console.log(localStorage)
           this.clearAll();
           this.showHome();
         })

@@ -1,13 +1,16 @@
 <template>
-  <div class="col-4">
-    <div class="card" style="width: 18rem;">
+  <div class="col-4" style>
+    <div
+      class="card"
+      style="width: 18rem;box-shadow: 0px 0px 2px 0px;background-color:rgb(255,255,255,0.3)"
+    >
       <h5 class="card-title" style="margin-top:30px">{{ product.name }}</h5>
       <div
-        style="height: 250px; width: 100%; display:flex;align-items:center;justify-content:center"
+        style="padding:5px;border-radius:5px;box-shadow: 0px 0px 2px 0px;margin:20px;height: 250px; width: 245px; display:flex;align-items:center;justify-content:center"
       >
-        <div>
+        <div style="margin:20px">
           <img
-            style="max-width:100%;height:auto;width:auto;max-height:250px"
+            style="max-width:100%;height:auto;width:auto;max-height:230px"
             class="card-img-top"
             v-bind:src="product.image"
             alt="Card image cap"
@@ -17,12 +20,15 @@
       <div class="card-body">
         <p class="card-text">Category: {{ product.category }}</p>
         <p class="card-text">Price: ${{ product.price }}</p>
-        <p v-if="!cart" class="card-text">Quantity: {{ product.quantity }}</p>
-        <p v-if="cart" class="card-text">Total Items: {{ product.count }}</p>
+        <div v-if="!cart" class="card-text">
+          <p style="background-color:white;odivacity:0.8">Quantity: {{ product.quantity }}</p>
+        </div>
+        <p v-if="outofstock" style="color:red">Out of stock!</p>
+        <p v-if="cart" style="background-color:white;odivacity:0.8" class="card-text">Total Items: {{ product.count }}</p>
         <p>
           <button
             v-if="!cart"
-            class="btn btn-primary"
+            class="btn btn-success"
             type="button"
             data-toggle="collapse"
             v-bind:data-target="`#${product._id}`"
@@ -53,7 +59,7 @@
           >Delete</button>
           <button
             @click="removeFromCart(product._id)"
-            v-if="cart"
+            v-if="cart && !history"
             class="btn btn-danger"
             type="button"
             style="margin-left:5px"
@@ -81,7 +87,7 @@
 const url = `http://localhost:3000`;
 export default {
   name: "my-store",
-  props: ["product", "myStore", "store", "cart"],
+  props: ["product", "myStore", "store", "cart", "history"],
   data() {
     return {
       outofstock: false
@@ -98,7 +104,8 @@ export default {
         method: "PATCH",
         url: `${url}/product/${productId}`,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem("token"),
+          access: localStorage.getItem("auth")
         },
         data: {
           quantity: newQ
@@ -142,7 +149,8 @@ export default {
         method: "PATCH",
         url: `${url}/product/${productId}`,
         headers: {
-          token: localStorage.getItem("token")
+          token: localStorage.getItem("token"),
+          access: localStorage.getItem("auth")
         },
         data: {
           quantity: newQ
@@ -158,7 +166,6 @@ export default {
           });
         })
         .then(({ data }) => {
-          console.log(data);
           this.$emit("showStore");
         })
         .catch(error => {
@@ -169,8 +176,3 @@ export default {
   }
 };
 </script>
-<style>
-.card {
-  margin-bottom: 30px;
-}
-</style>

@@ -1,13 +1,49 @@
 <template>
   <div id="app">
     <mynavbar :islogin="islogin" @logout="showLogin"></mynavbar>
-    <div v-if="myProfile.name" style="align-text:center"> 
-      <h3 style="margin-top:30px;color:white;opacity:0.9;font-weight:700">My Profile</h3>
-      {{ myProfile.name}} <br>
-      My Money: $ {{myProfile.money}}
-      <br>Items in Cart: {{myProfile.cart.length}}
+    <div style="display:flex">
+      <router-view
+        class="col-sm-9"
+        style="margin-left:6%;margin-top:3%;margin-bottom:100px;box-shadow: 0px 0px 3px 0px;padding:20px;background-color:rgb(255,255,255,0.1)"
+        :islogin="islogin"
+        @showHome="showHome"
+        @showProfile="readProfile"
+      ></router-view>
+
+      <div class="col-sm-3" v-if="islogin && myProfile.name" style="text-align:left;margin-top:3%">
+        <div style="display:flex;justify-content:center;flex-direction:column">
+          <div
+            style="text-align:center;box-shadow: 0px 0px 3px 0px;width:200px;padding: 10px;background-color:rgb(255,255,255,0.3)"
+          >
+            <h3 style>My Profile</h3>
+            Name: {{ myProfile.name}}
+            <br>
+            My Money: ${{myProfile.money}}
+            <br>
+            Items in Cart: {{myProfile.cart.length}}
+          </div>
+
+          <div
+            style="margin-top: 15px;text-align:center;width:200px;box-shadow: 0px 0px 3px 0px;padding: 5px;background-color:rgb(255,255,255,0.3)"
+          >
+            <h3 style>Categories</h3>
+            <br>
+            <router-link
+              v-for="category in categories"
+              :key="category"
+              :to="`/hacktivpedia?cat=${category}`"
+            >
+              <button
+                type="submit"
+                class="btn btn-success"
+                style="margin-bottom:10px;width:150px"
+              >{{category}}</button>
+            </router-link>
+            <br>
+          </div>
+        </div>
+      </div>
     </div>
-    <router-view :islogin="islogin" @showHome="showHome" @showProfile="readProfile"></router-view>
   </div>
 </template>
 
@@ -19,11 +55,9 @@ export default {
   data() {
     return {
       islogin: false,
-      readAll: false,
-      create: false,
-      edit: false,
-      readMy: false,
-      myProfile: {}
+      categories: [],
+      myProfile: {},
+      hacktiv: false
     };
   },
   components: {
@@ -31,42 +65,15 @@ export default {
   },
   methods: {
     showHome() {
-      localStorage.setItem("currentPage", "readAll");
+      this.islogin = true;
+      localStorage.setItem("currentPage", "hacktivpedia");
       this.$router.push("/hacktivpedia");
-      this.islogin = true;
-    },
-    showCreate() {
-      localStorage.setItem("currentPage", "create");
-      this.islogin = true;
-      this.home = false;
-      this.create = true;
-      this.edit = false;
-      this.articleStats = false;
-    },
-    showEdit(articleEdit) {
-      localStorage.setItem("currentPage", "edit");
-      this.islogin = true;
-      this.home = false;
-      this.create = false;
-      this.articleStats = false;
-      this.edit = true;
-      this.editSelect = articleEdit;
-    },
-    showArticle() {
-      localStorage.setItem("currentPage", "articleStats");
-      this.islogin = true;
-      this.home = false;
-      this.create = false;
-      this.articleStats = true;
-      this.edit = false;
-      this.readMyArticle();
     },
     showLogin() {
-      localStorage.setItem("currentPage", "login");
-      this.$router.push("/");
       this.islogin = false;
+      this.$router.push("/");
     },
-    readProfile() {
+    readProfile(tags) {
       axios({
         method: "GET",
         url: `${url}/cart`,
@@ -75,8 +82,10 @@ export default {
         }
       })
         .then(({ data }) => {
-          this.myProfile = data
-          console.log(data)
+          this.myProfile = data;
+          if (tags) {
+            this.categories = tags;
+          }
         })
         .catch(error => {
           console.log(error);
@@ -84,18 +93,11 @@ export default {
     }
   },
   created() {
+    console.log(localStorage.currentPage)
     if (localStorage.getItem("token")) {
-      this.readProfile()
-      this.islogin = true;
-      if (localStorage.currentPage == "readAll") {
-        this.showHome();
-      } else if (localStorage.currentPage == "articleStats") {
-        this.showArticle();
-      } else if (localStorage.currentPage == "create") {
-        this.showCreate();
-      } else {
-        this.showArticle();
-      }
+      this.islogin = true
+      this.showHome();
+      this.readProfile();
     } else {
       this.showLogin();
     }
@@ -121,5 +123,10 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+h3 {
+  color: grey;
+  opacity: 0.9;
+  font-weight: 700;
 }
 </style>

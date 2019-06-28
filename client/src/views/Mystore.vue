@@ -1,8 +1,11 @@
 <template>
-  <div class="container" style="">
-    <h3 style="margin-top:30px;color:white;opacity:0.9;font-weight:700">My Store</h3>
-    <div class="row justify-content-start" style="margin-top:30px;display:flex;justify-content:center">
-      <mycard :myStore="myStore" v-for="product in myProducts" :key="product._id" :product="product"></mycard>
+  <div class="container" style="display:flex;justify-content:center">
+    <div style="width:1000px">
+    <h3 style="font-weight:700">My Store</h3>
+    <p v-if="myProducts.length == 0"> Your store is empty!</p>
+    <div class="row justify-content-start" style="margin-top:30px;margin-left:1.5%">
+      <mycard :myStore="myStore" v-for="product in myProducts" :key="product._id" :product="product" @showMyStore="readMyStore"></mycard>
+    </div>
     </div>
   </div>
 </template>
@@ -25,7 +28,7 @@ export default {
     readMyStore() {
       axios({
         method: "GET",
-        url: `${url}/product?myArticle=myProduct`,
+        url: `${url}/product?myProduct=myProduct`,
         headers: {
           token: localStorage.getItem("token")
         }
@@ -39,6 +42,7 @@ export default {
     }
   },
   created() {
+          localStorage.setItem("currentPage", "mystore");
     this.readMyStore()
   }
 };

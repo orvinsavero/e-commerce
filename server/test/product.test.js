@@ -480,6 +480,9 @@ describe("Product testing", () => {
         .request(app)
         .patch(`/cart`)
         .set("token", token)
+        .send({
+          money: 0,
+        })
         .end(function(err, res) {
           expect(res).to.have.status(200);
           expect(res.body.cart.length).to.equal(0);

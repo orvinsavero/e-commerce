@@ -1,17 +1,16 @@
 <template>
-  <div class="container" style>
-    <h3 style="margin-top:30px;color:white;opacity:0.9;font-weight:700">Hacktiv Pedia</h3>
-    <div
-      class="row justify-content-start"
-      style="margin-top:30px;display:flex;justify-content:center"
-    >
-      <allcard
-        :store="store"
-        v-for="product in allProducts"
-        :key="product._id"
-        :product="product"
-        @showStore="readStore"
-      ></allcard>
+  <div class="container" style="display:flex;justify-content:center">
+    <div style="width:1000px">
+      <h3 style="font-weight:700">Hacktiv-Pedia</h3>
+      <div class="row justify-content-start" style="margin-top:30px;margin-left:1.5%">
+        <allcard
+          :store="store"
+          v-for="product in allProducts"
+          :key="product._id"
+          :product="product"
+          @showStore="filtering"
+        ></allcard>
+      </div>
     </div>
   </div>
 </template>
@@ -21,10 +20,10 @@ import allcard from "../components/card.vue";
 const url = `http://localhost:3000`;
 export default {
   name: "hacktiv-pedia",
-  props: ["islogin"],
   data() {
     return {
       allProducts: [],
+      filterCat: [],
       store: true
     };
   },
@@ -32,7 +31,7 @@ export default {
     allcard
   },
   methods: {
-    readStore() {
+    readStore(cb) {
       axios({
         method: "GET",
         url: `${url}/product`,
@@ -42,15 +41,51 @@ export default {
       })
         .then(({ data }) => {
           this.allProducts = data;
-          this.$emit("showProfile")
+          this.filterCat = this.filterTag(data);
+          if (cb && this.$route.query.cat) {
+            cb();
+          } else if (this.$route.query.cat) {
+            this.filtering();
+          }
+          this.$emit("showProfile", this.filterCat);
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    filterTag(input) {
+      console.log(input);
+      let arr = [];
+      input.forEach(product => {
+        if (product.category != "") {
+          if (arr.indexOf(product.category) == -1) {
+            arr.push(product.category);
+          }
+        }
+      });
+      return arr;
+    },
+    filtering() {
+      this.readStore(() => {
+        let arr = [];
+        this.allProducts.forEach(product => {
+          if (product.category == this.$route.query.cat) {
+            arr.push(product);
+          }
+        });
+        this.allProducts = arr;
+      });
     }
   },
   created() {
+    localStorage.setItem("currentPage", "hacktivpedia");
     this.readStore();
+  },
+  watch: {
+    "$route.query"() {
+      console.log("watch");
+      this.filtering();
+    }
   }
 };
 </script>

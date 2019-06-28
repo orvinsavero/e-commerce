@@ -1,6 +1,7 @@
 <template>
-  <form @submit.prevent="createProduct">
-    <div id="errorCreate">
+<div style="">
+  <form @submit.prevent="createProduct" >
+    <div v-if="error.create.length != 0" id="errorCreate">
       <p class="error" style="color:red;">{{ error.create }}</p>
     </div>
     <div class="form-group">
@@ -11,6 +12,7 @@
         class="form-control"
         id="nameCreate"
         placeholder="Name"
+        required
       >
     </div>
     <label for="imageCreate">Upload Image</label>
@@ -23,7 +25,7 @@
           :custom-strings="{
         upload: '<h1>Bummer!</h1>',
         drag: `<img
-            style='margin-right: 60px;height: 100px;width:100px;'
+            style='height: 80px;width:80px;'
             src='http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/256/Camera-Next-icon.png'
             alt='Card image cap'
           >`
@@ -39,6 +41,7 @@
         id="descCreate"
         rows="6"
         placeholder="Description"
+        required
       ></textarea>
     </div>
     <div class="form-row">
@@ -50,6 +53,7 @@
           class="form-control"
           id="priceCreate"
           placeholder="Price"
+          required
         >
       </div>
       <div class="form-group col-md-6">
@@ -60,6 +64,7 @@
           class="form-control"
           id="quantityCreate"
           placeholder="Quantity"
+          required
         >
       </div>
     </div>
@@ -71,11 +76,13 @@
         class="form-control"
         id="categoryCreate"
         placeholder="Category"
+        required
       >
     </div>
 
-    <button type="submit" class="btn btn-primary">Post</button>
+    <button type="submit" class="btn btn-success">Post</button>
   </form>
+  </div>
 </template>
 
 <script>
@@ -109,10 +116,6 @@ export default {
       newImage.append("quantity", this.product.quantity);
       newImage.append("category", this.product.category);
       newImage.append("image", this.$refs.pictureInput.file);
-    //   console.log(newImage);
-    //   for (var data of newImage) {
-    //     console.log(data);
-    //   }
       axios({
         method: "POST",
         url: `${url}/product`,
@@ -122,8 +125,7 @@ export default {
         data: newImage
       })
         .then(({ data }) => {
-          console.log(data);
-          this.$router.push("/mystore");
+          this.$router.push("/hacktivpedia");
         })
         .catch(error => {
           this.error.create = error.response.data.message;
