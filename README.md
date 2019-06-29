@@ -165,7 +165,6 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 - Token is decoded via JWT to get UserId.
 
 - User can only update Product to his/her cart.
-
 ```
 
 ## Delete Product in Cart
@@ -246,6 +245,5 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `400 bad request`
 
 ```
-- Token is decoded via JWT to get UserId.
-
+Token is decoded via JWT to get UserId.
 ```
