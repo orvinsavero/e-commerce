@@ -8,7 +8,7 @@
   - body:
     - `{ name: 'dimitri' , email: 'dimitri@mail.com', password: 'secret' }`
 - response:
-  - `201`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [] }`
+  - `201`: `{ _id: ObjectId(''), name: 'dimitri', email: 'dimitri@mail.com', password: 'HashedPassword', money: 0, cart: [], history: [] }`
 - error:
   - `Validation Error`
 
@@ -26,7 +26,7 @@
   - body
     - `{ email: 'dimitri@mail.com', password: 'secret' }`
 - response:
-  - `201`: `{ token: '...' }`
+  - `201`: `{ token: '...', access: '...' }`
 - error:
   - `404 not found`
 
@@ -120,7 +120,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `PATCH /:id`
 - request
   - headers
-    - `{ token }`
+    - `{ token, access }`
   - decoded
     - `{ id: _id }`
   - body
@@ -141,7 +141,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - `401 not authorized`
 
 ```
-- User can not update Product that does not belongs to his/her, it is authorized in middleware.
+- User can not update Product that does not belongs to his/her (except changing a product quantity when adding to cart with access), it is authorized in middleware.
 
 - Multer is used to convert form data into object, then it is uploaded to google cloud storage.
 ```
@@ -156,7 +156,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - decoded
     - `{ id: _id }`
 - response
-  - `200`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
+  - `200`: `{ _id: ObjectId(''), name:, 'dimitri', email: 'dimitri@mail.com', password: 'HashedPassword', mondey: 0, cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ], history: []`
     }`
 - error:
   - `401 not authorized`
@@ -198,7 +198,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - decoded
     - `{ id: _id }`
 - response
-  - `200`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
+  - `200`: `{ _id: ObjectId(''), name: 'dimitri', email: 'dimitri@mail.com', password: 'HashedPassword', money: 0, cart: [], history: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
     }`
 - error:
   - `401 not authorized`
@@ -219,7 +219,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
   - decoded
     - `{ id: _id }`
 - response
-  - `200`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword', cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ]`
+  - `200`: `{ _id: ObjectId(''), name: 'dimitri', email: 'dimitri@mail.com', password: 'HashedPassword', money: 0, cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ], history: []`
     }`
 - error:
   - `500 internal server error`
@@ -228,4 +228,24 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 - Token is decoded via JWT to get UserId.
 
 - User can only read Product from his/her cart.
+```
+
+## Topup 
+
+- route:
+  - `POST /topup`
+- request
+  - headers
+    - `{ token }`
+  - decoded
+    - `{ id: _id }`
+- response
+  - `200`: `{ _id: ObjectId(''), name: 'dimitri', email: 'dimitri@mail.com', password: 'HashedPassword', money: 1000, cart: [ { _id, name, quantity, price, description, image, category, created_at, UserId } ], history: []`
+    }`
+- error:
+  - `400 bad request`
+
+```
+- Token is decoded via JWT to get UserId.
+
 ```
