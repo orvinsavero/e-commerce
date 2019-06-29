@@ -106,7 +106,7 @@ Token is generated from JWT package.
   - decoded
     - `{ id: _id }`
 - response
-  - `200`: `{ _id: ObjectId('') }`
+  - `200`: `{ "n" : 1, "ok": 1, "deletedCount": 1 }`
 - error:
   - `401 not authorized`
 
