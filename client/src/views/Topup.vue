@@ -45,6 +45,7 @@ export default {
         }
       })
         .then(({ data }) => {
+          this.userMoney = ""
           this.$emit("showProfile");
         })
         .catch(error => {
