@@ -99,7 +99,7 @@ Token is generated from JWT package.
 ## Delete Product
 
 - route:
-  - `DELETE /:id`
+  - `DELETE /product/:id`
 - request
   - headers
     - `{ token }`
@@ -117,7 +117,7 @@ User can not delete Product that does not belongs to his/her, it is authorized i
 ## Update Product
 
 - route:
-  - `PATCH /:id`
+  - `PATCH /product/:id`
 - request
   - headers
     - `{ token, access }`
