@@ -87,7 +87,7 @@
 
 <script>
 import PictureInput from "vue-picture-input";
-const url = `http://localhost:3000`;
+const url = `http://34.87.13.129:81`;
 export default {
   name: "sell-component",
   data() {

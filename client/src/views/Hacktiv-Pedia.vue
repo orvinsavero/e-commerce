@@ -17,7 +17,7 @@
 
 <script>
 import allcard from "../components/card.vue";
-const url = `http://localhost:3000`;
+const url = `http://34.87.13.129:81`;
 export default {
   name: "hacktiv-pedia",
   data() {
